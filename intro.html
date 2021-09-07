@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>Лекция 01: Алгоритмы и их сложность</title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/reset.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/reveal.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/theme/black.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/lib/css/monokai.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/print/pdf.css' : 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/print/paper.css';
+document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+        <style>
+.theorem {
+    text-decoration: underline;
+}
+        </style>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <h3>Алгоритмизация и Программирование</h3>
+                    <div>&nbsp;</div>
+                    <h4>Алексей Андреевич Крещук</h4>
+                </section>
+                <section>
+                    <section>
+                        <h4>Программа курса лекций</h4>
+                        <ul><li>Алгоритмы и их сложность. Алгоритмы поиска.</li>
+                            <li>Алгоритмы сортировки и их сложность.</li>
+                            <li>Методы построения алгоритмов. Динамическое программирование. Метод "разделяй и властвуй". Примеры.</li>
+                            <li>Жадные алгоритмы.</li>
+                            <li>Поиск подстрок.</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Программа курса лекций</h4>
+                        <ul><li>Понятие структур данных и операций над ними. Пространственная сложность. Базовые структуры: массив, списки, стек, очередь.</li>
+                            <li>Двоичные деревья. Красно-чёрные деревья.</li>
+                            <li>Сортирующие деревья (очередь с приоритетом).</li>
+                            <li>Хеш таблицы.</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h4>Элементы контроля (1-2 модули)</h4>
+                        <ul><li>Домашние задания</li>
+                            <li>Проект</li>
+                            <li>Экзамен</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Домашнее задание</h4>
+                        <ul><li>Выполняется в Github Classroom.</li>
+                            <li>Если будет несколько одинаковых решений, все кроме одного получат 0 баллов за эту задачу.</li>
+                            <li>Оценка зависит от срока сдачи.</li>
+                            <li>Решение, прошедшее все тесты, не принимается.</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Проект</h4>
+                        <ul><li>Выполняется на Github.</li>
+                            <li>Может быть групповым или индивидуальным.</li>
+                            <li>Подробнее будет рассказано во втором модуле.</li>
+                            <li>Сразу подумайте, что бы вам было интересно реализовать, и обсудите это с вашим семинаристом.</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Экзамен</h4>
+                        <ul><li>Очный</li>
+                            <li>Письменный</li>
+                        </ul>
+                    </section>
+                </section>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/js/reveal.js"></script>
+
+        <script>
+            // More info about config & dependencies:
+            // - https://github.com/hakimel/reveal.js#configuration
+            // - https://github.com/hakimel/reveal.js#dependencies
+            Reveal.initialize({
+                dependencies: [
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/markdown/marked.js' },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/markdown/markdown.js' },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/notes/notes.js', async: true },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/highlight/highlight.js', async: true },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/math/math.js', async: true }
+                ]
+            });
+        </script>
+    </body>
+</html>
