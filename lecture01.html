@@ -1,0 +1,520 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>Лекция 01: Алгоритмы и их сложность</title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/reset.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/reveal.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/theme/black.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/lib/css/monokai.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/print/pdf.css' : 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/print/paper.css';
+document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+        <style>
+.theorem {
+    text-decoration: underline;
+}
+        </style>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <h3>Алгоритмизация и Программирование</h3>
+                    <div>&nbsp;</div>
+                    <h4>Алексей Крещук</h4>
+                </section>
+                <section>
+                    <section>
+                        <h4>Программа курса лекций</h4>
+                        <ul>
+                            <li> Алгоритмы и их сложность. Алгоритмы поиска.</li>
+                            <li> Алгоритмы сортировки и их сложность.</li>
+                            <li> Методы построения алгоритмов. Динамическое программирование. Метод "разделяй и властвуй". Примеры.</li>
+                            <li> Жадные алгоритмы.</li>
+                            <li> Поиск подстрок.</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Программа курса лекций</h4>
+                        <ul>
+                            <li> Понятие структур данных и операций над ними. Пространственная сложность. Базовые структуры: массив, списки, стек, очередь.</li>
+                            <li> Двоичные деревья. Красно-чёрные деревья.</li>
+                            <li> Сортирующие деревья (очередь с приоритетом).</li>
+                            <li> Хеш таблицы.</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Программа курса лекций</h4>
+                        <ul>
+                            <li>Общая теория сложности задач.</li>
+                            <li>Машины Тьюринга.</li>
+                            <li>Классы P и NP.</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h4>Сложность алгоритма</h4>
+                        <p>Алгоритм $A$ имеет входные данные $x$, которые он преобразует в выходные данные $y$. Каждому набору входных данных мы обычно можем сопоставить некоторую «сложность» алгоритма $L_A(x)$.</p>
+                    </section>
+                    <section>
+                        <h4>Максимальная и средняя сложность</h4>
+                        <p>Получить точную зависимость сложности от входных данных обычно не удаётся. Вместо этого входные данные «измеряются» один числом $n$. В этом случае мы можем измерять максимальную или среднюю сложность для всех $x$, задаваемых числом $n$: $L_A(n)$.
+                    </section>
+                    <section>
+                        <h4>Единицы измерения сложности</h4>
+                        <ul>
+                            <li>Арифметические операции</li>
+                            <li>Операции сравнения</li>
+                            <li>Обращения к памяти</li>
+                            <li>Занимаемая память</li>
+                            <li>Логические элементы</li>
+                            <li>Время выполнения на эталонном вычислителе</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <h4>Алгоритм поиска</h4>
+                    <p>Даны упорядоченный массив $a_1 &lt; a_2 &lt; \ldots &lt; a_n$ и число $a$.
+                    <p>Задача: найти $i$ такой, что $a_i = a$ при условии, что он существует.
+                </section>
+                <section>
+                    <section>
+                        <h4>Тривиальное решение</h4>
+                        <ol>
+                            <li>Пусть $i \leftarrow 1$</li>
+                            <li>Если $a_i = a$ вернуть ответ $i$</li>
+                            <li>Иначе $i \leftarrow i + 1$ </li>
+                        </ol>
+                    </section>
+                    <section>
+                        <h4>Тривиальное решение</h4>
+                        <pre><code data-trim class="python">
+                        def find(needle, haystack):
+                            i = 0
+                            while i &lt; len(haystack) - 1:
+                                if haystack[i] == needle:
+                                    return i
+                                i = i + 1
+                            return i
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h4>Тривиальное решение</h4>
+                        <pre><code data-trim class="python">
+                        def find(needle, haystack):
+                            i = 0
+                            while i &lt; len(haystack):
+                                if haystack[i] == needle:
+                                    return i
+                                i = i + 1
+                            return None
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h4>Тривиальное решение</h4>
+                        <pre><code data-trim class="python">
+                        def find(needle, haystack):
+                            for i in range(len(haystack)):
+                                if haystack[i] == needle:
+                                    return i
+                            return None
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h4>Библиотечное решение</h4>
+                        <pre><code data-trim class="python">
+                        def find(needle, haystack):
+                            return haystack.index(needle)
+                        </code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h4>Сложность тривиального решения</h4>
+                        <p>Выберем в качестве единицы измерения сложности число сравнений. Входные данные будем характеризовать длиной массива.
+                        <p>В худшем случае $L_A(n) = n-1$.
+                    </section>
+                    <section>
+                        <h4>Средняя сложность </h4>
+                        <p>Зафиксируем $n$. Пусть для каждого $i$ вероятность того, что $a_i = a$, равна $\frac{1}{n}$.
+                        <p>Тогда средняя сложность равна \[L^{cp}_A(n) = \frac{(1 + 2 + \ldots + n-1) + n-1}{n} = \frac{n+1}{2} - \frac{1}{n}.\]
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h4>Класс алгоритмов</h4>
+                        <ul>
+                            <li>Рассмотрим детерминированные алгоритмы. Каждый алгоритм вначале сравнивает $a$ с $a_i$, при чём $i$ не зависит от $a$.</li>
+                            <li>В зависимости от результата сравнения выбирается следующий индекс $j$ следующего элемента с которым сравнивается $a$.</li>
+                        </ul>
+                    </section><section>
+                        <h4>Дерево решений</h4>
+                        <ul>
+                            <li>Для фиксированной длины массива алгоритм поиска можно описать как бинарное дерево.</li>
+                            <li>Каждой его вершине, кроме листьев, приписан индекс элемента, с которым происходит сравнение на этом шаге.</li>
+                            <li>Каждому листу приписан индекс элемента, равного $a$.</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Сложность</h4>
+                        <ul><li>Обозначим $L_A(a_i, n)$ сложность алгоритма, когда $a_i = a$.</li>
+                            <li>Тогда сложность (в худшем случае) равна \[L_A(n) = \max_{i=\overline{1,n}} L_A(a_i, n).\]</li>
+                            <li>Среднюю сложность определим как \[L^{cp}_A(n) = \frac{1}{n} \sum_{i=1}^n L_A(a_i, n).\]</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h4>Теорема</h4>
+                        Существует алгоритм с $L_A(n) = \lceil \log_2 n \rceil$.
+                        Для доказательства приведём алгоритм «бинарного поиска».
+                    </section>
+                    <section>
+                        <h4>Доказательство</h4>
+                        <ul><li>Если $n = 1$, выдать ответ $a = a_1$.</li>
+                            <li>Сравнить $a$ с $a_k$, где $k = \lfloor \frac{n}{2} \rfloor$.</li>
+                            <li>Если $a \leq a_k$, рекуррентно осуществить поиск среди $a_1 &lt; \ldots &lt; a_k$</li>
+                            <li>Иначе рекуррентно осуществить поиск среди $a_{k+1} &lt; \ldots &lt; a_n$</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Доказательство</h4>
+                        <ul><li>Длина массива для рекуррентного поиска не превышает $\lceil\frac{n}{2}\rceil$</li>
+                            <li>Значит сложность равна $L_A(n) = 1 + L_A(\lceil\frac{n}{2}\rceil)$</li>
+                            <li>Докажем, что для $2^{m-1} &lt; n \leq 2^{m}$ сложность $L_A(n) = m$ с помощью математической индукции.
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Доказательство</h4>
+                        <ul><li>При $m=0$, $n=1$ получаем $L_A(1) = 0$.</li>
+                            <li>Пусть утверждение верно для $m$ и $2^m &lt; n \leq 2^{m+1}$.</li>
+                            <li>Тогда $2^{m-1} &lt; \lceil \frac{n}{2} \rceil \leq 2^m$, а значит $L_A(\lceil \frac{n}{2} \rceil) = m$.</li>
+                            <li>Следовательно $L_A(n) = m + 1$, что и требовалось доказать.</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Следствие</h4>
+                        Для бинарного поиска $L^{cp}_A(n) \leq \lceil \log_2 n \rceil$.
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h4>Примеры сложности (list)</h4>
+                        <div style="overflow-y:scroll; max-height: 80vh;">
+                            <table style="overflow: scroll"><tbody><tr>  <td><strong>Operation</strong> </td>
+                                        <td><strong>Average Case</strong> </td>
+                                        <td><strong><a class="http" href="http://en.wikipedia.org/wiki/Amortized_analysis">Amortized Worst Case</a></strong> </td>
+                                    </tr>
+                                    <tr>  <td>Copy </td>
+                                        <td>O(n) </td>
+                                        <td>O(n) </td>
+                                    </tr>
+                                    <tr>  <td>Append[1] </td>
+                                        <td>O(1) </td>
+                                        <td>O(1) </td>
+                                    </tr>
+                                    <tr>  <td>Pop last </td>
+                                        <td>O(1) </td>
+                                        <td>O(1) </td>
+                                    </tr>
+                                    <tr>  <td>Pop intermediate </td>
+                                        <td>O(k) </td>
+                                        <td>O(k) </td>
+                                    </tr>
+                                    <tr>  <td>Insert </td>
+                                        <td>O(n) </td>
+                                        <td>O(n) </td>
+                                    </tr>
+                                    <tr>  <td>Get Item </td>
+                                        <td>O(1) </td>
+                                        <td>O(1) </td>
+                                    </tr>
+                                    <tr>  <td>Set Item </td>
+                                        <td>O(1) </td>
+                                        <td>O(1) </td>
+                                    </tr>
+                                    <tr>  <td>Delete Item </td>
+                                        <td>O(n) </td>
+                                        <td>O(n) </td>
+                                    </tr>
+                                    <tr>  <td>Iteration </td>
+                                        <td>O(n) </td>
+                                        <td>O(n) </td>
+                                    </tr>
+                                    <tr>  <td>Get Slice </td>
+                                        <td>O(k) </td>
+                                        <td>O(k) </td>
+                                    </tr>
+                                    <tr>  <td>Del Slice </td>
+                                        <td>O(n) </td>
+                                        <td>O(n) </td>
+                                    </tr>
+                                    <tr>  <td>Set Slice </td>
+                                        <td>O(k+n) </td>
+                                        <td>O(k+n) </td>
+                                    </tr>
+                                    <tr>  <td>Extend[1] </td>
+                                        <td>O(k) </td>
+                                        <td>O(k) </td>
+                                    </tr>
+                                    <tr>  <td><a class="http" href="http://svn.python.org/projects/python/trunk/Objects/listsort.txt">Sort</a> </td>
+                                        <td>O(n log n) </td>
+                                        <td>O(n log n) </td>
+                                    </tr>
+                                    <tr>  <td>Multiply </td>
+                                        <td>O(nk) </td>
+                                        <td>O(nk) </td>
+                                    </tr>
+                                    <tr>  <td>x in s </td>
+                                        <td>O(n) </td>
+                                        <td> </td>
+                                    </tr>
+                                    <tr>  <td>min(s), max(s) </td>
+                                        <td>O(n) </td>
+                                        <td> </td>
+                                    </tr>
+                                    <tr>  <td>Get Length </td>
+                                        <td>O(1) </td>
+                                        <td>O(1) </td>
+                                    </tr>
+                                </tbody></table></div>
+                    </section>
+                    <section>
+                        <h4>Примеры сложности (dict)</h4>
+                        <div style="overflow-y:auto; max-height: 80vh;">
+                            <table style="width: &amp;quot;&amp;quot"><tbody><tr>  <td><strong>Operation</strong> </td>
+                                        <td><strong>Average Case</strong> </td>
+                                        <td><strong>Amortized Worst Case</strong> </td>
+                                    </tr>
+                                    <tr>  <td>Copy[2] </td>
+                                        <td>O(n) </td>
+                                        <td>O(n) </td>
+                                    </tr>
+                                    <tr>  <td>Get Item </td>
+                                        <td>O(1) </td>
+                                        <td>O(n) </td>
+                                    </tr>
+                                    <tr>  <td>Set Item[1] </td>
+                                        <td>O(1) </td>
+                                        <td>O(n) </td>
+                                    </tr>
+                                    <tr>  <td>Delete Item </td>
+                                        <td>O(1) </td>
+                                        <td>O(n) </td>
+                                    </tr>
+                                    <tr>  <td>Iteration[2] </td>
+                                        <td>O(n) </td>
+                                        <td>O(n) </td>
+                                    </tr>
+                                </tbody></table>
+                        </div>
+                    </section>
+                    <section>
+                        <h4>Сравнение сложности</h4>
+                        <div style="overflow-y:auto; max-height: 80vh;">
+                            <table style="width: &amp;quot;&amp;quot"><tbody><tr>  <td><strong>Operation</strong> </td>
+                                        <td><strong>Average Case</strong> </td>
+                                        <td><strong>Amortized Worst Case</strong> </td>
+                                    </tr>
+                                    <tr><td colspan=3 style="text-align:center">dict</td></tr>
+                                    <tr>  <td>Get Item </td> <td>O(1) </td> <td>O(n) </td> </tr>
+                                    <tr>  <td>Delete Item </td>
+                                        <td>O(1) </td>
+                                        <td>O(n) </td>
+                                    </tr>
+                                    <tr><td colspan=3 style="text-align:center">list</td></tr>
+                                    <tr>  <td>Get Item </td>
+                                        <td>O(1) </td>
+                                        <td>O(1) </td>
+                                    </tr>
+                                    <tr>  <td>Delete Item </td>
+                                        <td>O(n) </td>
+                                        <td>O(n) </td>
+                                    </tr>
+                                </tbody></table>
+                        </div>
+                    </section>
+                    <section>
+                        <h4>Сложность в C++ (map::insert)</h4>
+                        1-2) Логарифмическая по размеру контейнера, O(log(size())).<br>
+                        3-4) Амортизированная константа, если вставка происходит в позицию прямо перед хинтом. Иначе — логарифмическая по размеру контейнера.  <br>
+                        5-6) O(N*log(size() + N)), где N — сколько элементов вставить.<br>
+                    </section>
+                    <section>
+                        <h4>Сложность в C++ (алгоритмы)</h4>
+                            <table><tbody><tr>  <td><strong>Алгоритм</strong> </td>
+                                        <td><strong>Сложность</strong> </td>
+                                    </tr>
+                                    <tr>  <td>nth_element</td>
+                                        <td>Линейный в среднем.</td>
+                                    </tr>
+                                    <tr>  <td>binary_search</td>
+                                        <td>Логарифмическая</td>
+                                    </tr>
+                                    <tr>  <td>partition</td>
+                                        <td>Ровно $N$ применений предиката, и не более $N$ перестановок элементов.</td>
+                                    </tr>
+                                    <tr>  <td>sort</td>
+                                        <td>$O(N·log(N))$</td>
+                                    </tr>
+                                </tbody></table>
+                    </section>
+                </section>
+                <section>
+                    <ul><li>Глубиной $h(x)$ листа $x$ в дереве $D$ будем называть число рёбер в пути из корня до $x$.</li>
+                        <li>Высотой дерева $h(D)$ будем называть максимальную глубину его листьев.</li>
+                        <li>Средней высотой дерева $h^{cp}(D)$ будем называть среднее арифметическое глубин всех его листьев.</li>
+                    </ul>
+                </section>
+                <section>
+                    <section>
+                        <h4>Лемма</h4>
+                        Для любого бинарного дерева, имеющего $n$ листьев, выполняются неравенства:
+                        \[ h(D) \geq \lceil \log_2 n \rceil \]
+                        \[ h^{cp}(D) \geq \log_2 n \]
+                    </section>
+                    <section>
+                        <h4>Доказательство</h4>
+                        <ul><li>Любое дерево высоты $h$ можно достроить до полного бинарного дерева высоты $h$.</li>
+                            <li>Для этого нужно к каждому листу $x$ высоты $h(x)$ «доклеить» полное бинарное дерево высоты $h - h(x)$.</li>
+                            <li>Данная операция увеличивает число листьев, но не увеличивает высоту дерева.</li>
+                            <li>Полное бинарное дерево высоты $h$ имеет $2^h$ листьев.</li>
+                            <li>Следовательно число листьев $n$ исходного дерева не превышает $2^h$ или $h \geq \log_2 n$.
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Доказательство</h4>
+                        <ul><li>Доклеивая полное бинарное дерево к листу $x$ мы добавляем $2^{h - h(x)}$ листьев, но убираем лист $x$.</li>
+                            <li>Полное бинарное дерево высоты $h$ имеет $2^h$ листьев.</li>
+                            <li>Следовательно $\sum_x 2^{h - h(x)} = 2^h$, или $\sum_x 2^{-h(x)} = 1$, где сумма идёт по всем листьям исходного дерева.</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h4>Доказательство</h4>
+                        <ul><li>Воспользуемся теоремой о связи среднего арифметического и среднего геометрического:
+                                \[ \frac{1}{n}  = \frac{1}{n} \sum_x 2^{-h(x)} \geq \sqrt[n]{\prod_x 2^{-h(x)}} = \sqrt[n]{2^{-\sum_x h(x)}} \]</li>
+                            <li>$ 2^{-\sum_x h(x)} \geq n^n $</li>
+                            <li>$ \frac{1}{n} sum_x h(x) \geq \log_2 n $, что и требовалось доказать.</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <h4>Теорема</h4>
+                    Для любого алгоритма $A$ поиска в упорядоченном массиве справедливы оценки:
+                    \[ L_A(n) \geq \lceil \log_2 n \rceil, \quad L^{cp}_A(n) \geq \log_2 n \]
+
+                    Следовательно, алгоритм бинарного поиска оптимален по сложности.
+                </section>
+                <section>
+                    <p>А что, если сравнение элементов может вернуть три значения: &lt;, &gt;, =?</p>
+                    <p><emph>N.B.</emph>C++ и Python используют только &lt;</p>
+                </section>
+                <section>
+                    <h1>Сортировка</h1>
+                </section>
+                <section>
+                    <h4>Постановка задачи</h4>
+                    <div><i>Вход:</i> последовательность различных чисел $a_1, a_2, \ldots, a_n$</div>
+                    <div><i>Выход:</i> перестановка $i_1, \ldots, i_n$, такая что $a_{i_1} &lt; a_{i_2} &lt; \ldots &lt; a_{i_n}$</div>
+                </section>
+                <section>
+                    <h4>Класс алгоритмов</h4>
+                    <ul>
+                        <li>На каждом шаге либо сравнивается пара элементов $(i,j)$, при чём номера элементов определяются лишь результатами предыдущих сравнений,</li>
+                        <li>либо выдаётся ответ.</li>
+                        <li>Такой алгоритм можно представить в виде дерева решений.</li>
+                    </ul>
+                </section>
+                <section>
+                    <h4>Сложность</h4>
+                    <p>Сложностью $L_A(n)$ алгоритма сортировки называется максимальное число сравнений</p>
+                    <p><span class="theorem">Теорема</span> $L_A(n) \geq \log_2 n! = (1 - o(1))n \log_2 n$</p>
+                </section>
+                <section>
+                    <h4>Сортировка вставками</h4>
+                    <ul>
+                        <li>Пусть даны элементы $a_1 &lt; a_2 &lt; \ldots &lt; a_k$ и $a_{k+1}$.</li>
+                        <li>С помощью бинарного поиска найдём «место» для $a_{k+1}$.</li>
+                        <li>Вставим его на это место, изменив порядок элементов.</li>
+                        <li>Перейдём к элементу $a_{k+2}$.</li>
+                    </ul>
+                </section>
+                <section>
+                    <h4>Сложность сортировки вставками</h4>
+                    \[ L_{ins}(n) \geq \log_2 n + n - 1 \]
+                    \begin{align}
+                    L_{ins}(n) &amp;= \sum_{k=2}^{n} \lceil \log_2 k \rceil \\
+                           &amp;\leq \sum_{k=2}^{n} \log_2 k + n - 1\\
+                           &amp;=\log_2 n! + n - 1 \\
+                           &amp;=(1 + o(1))n \log_2 n
+                    \end{align}
+                </section>
+                <section>
+                    <h4>Сортировка слиянием</h4>
+                    <ul>
+                        <li>Разделим входную последовательность пополам и отсортируем половинки.</li>
+                        <li>«Сольём» отсортированные половинки:
+                            <ul>
+                                <li>Возьмём первые элементы из обеих половинок</li>
+                                <li>Меньший из них удалим из половинки и добавим к выходной последовательности</li>
+                                <li>Будем повторять предыдущие шаги, пока одна половинка не опустеет</li>
+                                <li>После этого допишем оставшиеся элементы в конец выходной последовательности</li>
+                            </ul></li>
+                    </ul>
+                </section>
+                <section>
+                    <h4>Сложность сортировки слиянием</h4>
+                    <ul>
+                        <li>$L_{merge}(n) = L_{merge}(\lfloor \frac{n}{2} \rfloor) + L_{merge}(\lceil \frac{n}{2} \rceil) + n - 1$</li>
+                        <li>$L_{merge}(n) = n \log_2 n - n + 1$ для $n = 2^k$</li>
+                    </ul>
+                </section>
+                <section>
+                    <h4>Доказательство</h4>
+                    <ul>
+                        <li>Для $k=0$ - очевидно $L_{merge}(n) = 0$</li>
+                        <li>Пусть $L_{merge}(n) = n \log_2 n - n + 1$</li>
+                        <li>Тогда
+                            \begin{align}
+                            L_{merge}(2n) &amp;= 2L_{merge}(n) + 2n - 1 \\
+                            &amp;= 2 n \log_2 n - 2n + 2 + 2n - 1 \\
+                            &amp;= 2 n (\log_2 n + 1) - 2n + 1 \\
+                            &amp;= 2 n \log_2 (2n) - 2n + 1
+                            \end{align}
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/js/reveal.js"></script>
+
+        <script>
+            // More info about config & dependencies:
+            // - https://github.com/hakimel/reveal.js#configuration
+            // - https://github.com/hakimel/reveal.js#dependencies
+            Reveal.initialize({
+                dependencies: [
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/markdown/marked.js' },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/markdown/markdown.js' },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/notes/notes.js', async: true },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/highlight/highlight.js', async: true },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/math/math.js', async: true }
+                ]
+            });
+        </script>
+    </body>
+</html>
