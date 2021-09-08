@@ -1,0 +1,10 @@
+digraph G {
+    3 -> 2;
+    l3 [label=3];
+    3 -> l3;
+    l2a [label=2];
+    2 -> l2a;
+    l2 [label=2];
+    2 -> l2;
+
+}
