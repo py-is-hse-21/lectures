@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>Введение в асимптотическую сложность</title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/css/reset.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/css/reveal.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/css/theme/black.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/lib/css/monokai.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/css/print/pdf.css' : 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/css/print/paper.css';
+document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+        <style>
+.theorem {
+    text-decoration: underline;
+}
+                    .graph {
+                        margin: auto;
+                        display: inline-block;
+                    }
+
+        </style>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <h3>Введение в асимптотическую сложность</h3>
+                    <div>&nbsp;</div>
+                    <h4>Алексей Андреевич Крещук</h4>
+                </section>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.22.7/function-plot.js" integrity="sha512-MUHYAU7vRlaN0MVTEVPuh99xifmHD9kmqV9ehc8UYtsd99B+dP2TRT/N5wPTyocj9+/NSOgsS4u5cL5gTPl9eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                <section>
+                    <section>
+                        <h4>Рост сложности</h4>
+                        <div><span id="quadratic" class="graph"></span></div>
+                        <script>
+                            document.addEventListener('reveal-ready', function(e) {
+                                functionPlot({
+                                    target: '#quadratic',
+                                    data: [{
+                                        fn: 'x'
+                                    }, {
+                                        fn: 'x^2/30'
+                                    }]
+                                });
+                            });
+                        </script>
+                    </section><section>
+                        <h4>Рост сложности 2</h4>
+                        <div><span id="linear" class="graph"></span></div>
+                        <script>
+                            document.addEventListener('reveal-ready', function(e) {
+                                functionPlot({
+                                    target: '#linear',
+                                    width: 800,
+                                    height: 600,
+                                    data: [{
+                                        fn: '1.5*x'
+                                    }, {
+                                        fn: 'x+sqrt(x)'
+                                    }]
+                                });
+                            });
+                        </script>
+                    </section>
+                </section>
+                <section>
+                    <img src="big-o-complexity-chart.png">
+                </section>
+                <section>
+                    <section>
+                        <h4>Обзор обозначений</h4>
+                        <img src="bigO-comparison.png">
+                    </section>
+                    <section>
+                        <h4>Пояснения</h4>
+                        <ul><li>$f(n) \in o\left(g(n)\right)$ — если долго уменьшать масштаб, $f(n)$ станет ниже $g(n)$ в правой части графика</li>
+                            <li>$f(n) \in \Theta\left(g(n)\right)$ — если долго уменьшать масштаб, график перестанет меняться</li>
+                            <li>$O$ — объединение $o$ и $\Theta$</li>
+                        </ul>
+                    </section>
+                </section>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/js/reveal.js"></script>
+
+        <script>
+            // More info about config & dependencies:
+            // - https://github.com/hakimel/reveal.js#configuration
+            // - https://github.com/hakimel/reveal.js#dependencies
+            Reveal.addEventListener( 'ready', function(event) {
+                document.dispatchEvent(new Event('reveal-ready'));
+            });
+            Reveal.initialize({
+                dependencies: [
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/plugin/markdown/marked.js' },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/plugin/markdown/markdown.js' },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/plugin/notes/notes.js', async: true },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/plugin/highlight/highlight.js', async: true },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/plugin/math/math.js', async: true }
+                ]
+            });
+        </script>
+    </body>
+</html>
