@@ -1,0 +1,207 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>Динамическое программирование</title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/reset.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/reveal.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/theme/black.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/lib/css/monokai.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/print/pdf.css' : 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/print/paper.css';
+document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+        <style>
+.theorem {
+    text-decoration: underline;
+}
+        </style>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <h3>Динамическое программирование</h3>
+                    <div>&nbsp;</div>
+                    <h4>Алексей Крещук</h4>
+                </section>
+                <section>
+                    <section>
+                        <h4>Простой пример: числа Фибоначчи</h4>
+                    </section>
+                    <section>
+                        <p>Числа Фибоначчи — элементы числовой последовательности
+                        <p>0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, … (последовательность A000045 в OEIS),
+                        <p>в которой первые два числа равны 0 и 1, а каждое последующее число равно сумме двух предыдущих чисел. Названы в честь средневекового математика Леонардо Пизанского (известного как Фибоначчи).
+                        <p><small><a href="https://ru.wikipedia.org/wiki/%D0%A7%D0%B8%D1%81%D0%BB%D0%B0_%D0%A4%D0%B8%D0%B1%D0%BE%D0%BD%D0%B0%D1%87%D1%87%D0%B8">Из Википедии</a></small>
+                    </section>
+                    <section>
+                        <h3>Простое рекурсивное решение</h3>
+                        <pre><code data-trim class=python>
+                            def fib(n):
+                                if n &lt;= 1:
+                                    return n
+                                return fib(n-1) + fib(n-2)
+                        </code></pre>
+                        Сложность $O(n^2)$, память $O(1)$
+                    </section>
+                    <section>
+                        <h3>top-down и memoization</h3>
+                        <pre><code data-trim class=python>
+                            fibs = {}
+                            def fib(n):
+                                if n &lt;= 1:
+                                    return n
+                                if n not in fibs:
+                                    fibs[n] = fib(n-1) + fib(n-2)
+                                return fibs[n]
+                        </code></pre>
+                        Сложность $O(n)$, память $O(n)$
+                    </section>
+                    <section>
+                        <h3>bottom-up или итеративное решение</h3>
+                        <pre><code data-trim class=python>
+                            def fib(n):
+                                fibs = [0, 1]
+                                for i in range(2,n+1):
+                                    fibs.append(fibs[i-1] + fibs[i-2])
+                                return fibs[n]
+                        </code></pre>
+                        Сложность $O(n)$, память $O(n)$
+                    </section>
+                    <section>
+                        <h3>Уменьшение потребления памяти</h3>
+                        <pre><code data-trim class=python>
+                            def fib(n):
+                                a = 0 # fib(i-2)
+                                b = 1 # fib(i-1)
+                                for i in range(2,n+1):
+                                    a, b = b, a+b
+                                return b
+                        </code></pre>
+                        Сложность $O(n)$, память $O(1)$
+                    </section>
+                </section>
+                <section>
+                    <a href="https://www.freecodecamp.org/news/follow-these-steps-to-solve-any-dynamic-programming-interview-problem-cc98e508cd0e/">Follow these steps to solve any Dynamic Programming interview problem</a>
+                    <ol>
+                        <li>How to recognize a DP problem</li>
+                        <li>Identify problem variables</li>
+                        <li>Clearly express the recurrence relation</li>
+                        <li>Identify the base cases</li>
+                        <li>Decide if you want to implement it iteratively or recursively</li>
+                        <li>Add memoization</li>
+                        <li>Determine time complexity</li>
+                    </ol>
+                </section>
+                <section>
+                    <ol>
+                        <li>Опознать задачу на динамическое программирование</li>
+                        <li>Определить переменные</li>
+                        <li>Явно выписать рекуррентное соотношение</li>
+                        <li>Определить граничные условия</li>
+                        <li>Выбрать между рекурсивной и итеративной реализацией</li>
+                        <li>Добавить мемоизацию</li>
+                        <li>Определить сложность</li>
+                    </ol>
+                </section>
+                <section>
+                    <img src="crazy jumping ball.gif" class="kg-image">
+                </section>
+                <section>
+                    <section>
+                        <img src="jumping scheme.jpeg">
+                        <ol>
+                            <li>Есть дорожка с шипами, представленная булевым массивом.</li>
+                            <li>Мы начинаем со скоростью $S$. Скорость всегда не отрицательная и соответствует длине следующего прыжка.</li>
+                        </ol>
+                    </section><section>
+                        <img src="jumping scheme.jpeg">
+                        <ol start=3>
+                            <li>Между двумя прыжками можно изменить скорость на 1.</li>
+                            <li>Наша задача остановиться, не попав ни на один шип.</li>
+                        </ol>
+                        Функция должна выдать, можно ли остановиться на заданной дорожке при заданной начальной скорости.
+                    </section>
+                </section>
+                <section>
+                    <h3>Опознать задачу на динамическое программирование</h3>
+                    Возможность остановить в данной точке с данной скоростью определяется возможностями остановить на одной из трёх последующих точек с другими скоростями. Таким образом задача сводится к нескольким задачам меньшего «размера».
+                </section>
+                <section>
+                    <h3>Определить переменные</h3>
+                    Переменными являются положение P и скорость S. Именно они отличают задачу от подзадач.
+                </section>
+                <section>
+                    <h3>Явно выписать рекуррентное соотношение</h3>
+                    <pre><code data-trim class=python>
+                    canStop(S, P) = canStop(S, P + S)
+                                 or canStop(S — 1, P + S — 1)
+                                 or canStop(S + 1, P + S + 1)
+                    </code></pre>
+                </section>
+                <section>
+                    <h3>Определить граничные условия</h3>
+                    <ul>
+                        <li>Границы: $P &lt; 0$; $P &gt; |R|$; $!R[P]$; $S \leq 0$.</li>
+                        <li>$S=0$ соответствует результату True.</li>
+                        <li>Остальные соответствуют False.</li>
+                        <li>$S &lt; 0$ недостижимо.</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Выбрать между рекурсивной и итеративной реализацией</h3>
+                    <table style=" font-size: 75%; ">
+                        <tr><th></th><th>Рекурсивная</th><th>Итеративная</th></tr>
+                        <tr><td>Память</td><td>Рекурсивный стек и разреженная мемоизация</td><td>Полная мемоизация</td></tr>
+                        <tr><td>Время выполнения</td><td>Часто быстрее, зависит от входных данных</td><td>Часто медленнее, делает лишние вычисления</td></tr>
+                        <tr><td>Переполнение стека</td><td>Возможно</td><td>Нет</td></tr>
+                        <tr><td>Интуитивная простота</td><td>Проще</td><td>Сложнее</td></tr>
+                    </table>
+                </section>
+                <section>
+                    <h3>Добавить мемоизацию</h3>
+                    <ul>
+                        <li>В начале функции проверить наличие входных данных в словаре. Если они там есть, вернуть значение из словаря.</li>
+                        <li>При возврате значения из функции, записать его в словарь.</li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>Определить сложность</h3>
+                    <ul>
+                        <li>Сложность задаётся количеством состояний и количеством работы на каждое состояние.</li>
+                        <li>Грубая оценка сложности: скорость и позиция не превышают длину дорожки $n$, значит $O(n^2)$</li>
+                        <li>Более точная: при $S &gt; O(\sqrt{n})$ мы не сможем остановиться, так что $O(n^{1.5})$</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/js/reveal.js"></script>
+
+        <script>
+            // More info about config & dependencies:
+            // - https://github.com/hakimel/reveal.js#configuration
+            // - https://github.com/hakimel/reveal.js#dependencies
+            Reveal.initialize({
+                dependencies: [
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/markdown/marked.js' },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/markdown/markdown.js' },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/notes/notes.js', async: true },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/highlight/highlight.js', async: true },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/math/math.js', async: true }
+                ]
+            });
+        </script>
+    </body>
+</html>
