@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>Введение в асимптотическую сложность</title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/css/reset.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/css/reveal.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/css/theme/black.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/lib/css/monokai.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/css/print/pdf.css' : 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/css/print/paper.css';
+document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+        <style>
+.theorem {
+    text-decoration: underline;
+}
+                    .graph {
+                        margin: auto;
+                        display: inline-block;
+                    }
+
+        </style>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <h3>Алгоритмы поиска подстроки</h3>
+                    <div>&nbsp;</div>
+                    <h4>Алексей Андреевич Крещук</h4>
+                </section>
+                <section>
+                    <h1>Алгоритм Кнута-Морриса-Пратта</h1>
+                </section>
+                <section>
+                    <section>
+                        <h4>Префикс-функция</h4>
+                        <p>Дана строка <code class="python">s[0:n]</code>. Требуется вычислить для неё префикс-функцию, т.е. массив чисел <code class="python">π[0:n]</code>, где <code class="python">π[i]</code> определяется следующим образом: это такая наибольшая длина наибольшего собственного суффикса подстроки <code class="python">s[0:i+1]</code>, совпадающего с её префиксом (собственный суффикс — значит не совпадающий со всей строкой). В частности, значение <code class="python">π[0]</code> полагается равным нулю.</p>
+                    </section>
+                    <section>
+                        <pre><code data-trim class="python">
+                        def prefix(string: str) -&gt; list:
+                            result = [0]*len(string)
+                            for i in range(1,len(string)+1):
+                                for k in range(i):
+                                    if string[:k] == string[i-k:i]:
+                                        result[i-1] = k
+                            return result
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h1>Какая у такой функции сложность?</h1>
+                    </section>
+                    <section>
+                        <h1>Какая у такой функции сложность?</h1>
+                        <h1>$O(n^3)$</h1>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>Оптимизация 1</h1>
+                    </section>
+                    <section>
+                        <p>Длина префикса не может увеличиться больше, чем на 1.</p>
+                        <p>Пусть префикс-функция для подстроки длины $n$ равна 3. Тогда подстрока имеет вид "abc...abc". Но тогда подстрока длины $n-1$ имеет вид "abc...ab", а значит её префикс функция не меньше 2.</p>
+                    </section>
+                    <section>
+                        <pre><code data-trim class="python">
+                        def prefix(string: str) -&gt; list:
+                            result = [0]*len(string)
+                            for i in range(1,len(string)+1):
+                                prev = result[i-2] if i&gt;1 else 0
+                                for k in range(prev+1,0,-1):
+                                    if string[:k] == string[i-k:i]:
+                                        result[i-1] = k
+                                        break
+                            return result
+                        </code></pre>
+                    </section>
+                    <section>
+                        Новая версия будет иметь сложность $O(n^2)$. Почему, узнаем после изучения Амортизационного анализа.
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>Оптимизация 2</h1>
+                    </section>
+                    <section>
+                        <p>Если <code class="python">s[i] == s[π[i]]</code>,<br>
+                        то <code class="python">π[i+1] == π[i] + 1</code></p>
+                        <img src="opt2-1.png">
+                        <p>Если <code class="python">s[i] != s[π[i]]</code>, то</p>
+                        <img src="opt2-2.png">
+                    </section>
+                    <section>
+                        <pre><code data-trim class="python">
+                        def prefix(s: str) -&gt; list:
+                            result = [0]*len(s)
+                            for i in range(1,len(s)):
+                                j = result[i-1]
+                                while j &gt; 0 and s[i] != s[j]:
+                                    j = result[j-1]
+                                if s[i] == s[j]:
+                                    j = j + 1
+                                result[i] = j
+                            return result
+                        </code></pre>
+                    </section>
+                    <section>
+                        Новая версия будет иметь сложность $O(n)$. Почему, узнаем после изучения Амортизационного анализа.
+                    </section>
+                </section>
+                <section>
+                    <h1>Демонстрация алгоритма Кнута-Морриса-Пратта</h1>
+                </section>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/js/reveal.js"></script>
+
+        <script>
+            // More info about config & dependencies:
+            // - https://github.com/hakimel/reveal.js#configuration
+            // - https://github.com/hakimel/reveal.js#dependencies
+            Reveal.addEventListener( 'ready', function(event) {
+                document.dispatchEvent(new Event('reveal-ready'));
+            });
+            Reveal.initialize({
+                dependencies: [
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/plugin/markdown/marked.js' },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/plugin/markdown/markdown.js' },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/plugin/notes/notes.js', async: true },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/plugin/highlight/highlight.js', async: true },
+                    { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.9.2/plugin/math/math.js', async: true }
+                ]
+            });
+        </script>
+    </body>
+</html>
